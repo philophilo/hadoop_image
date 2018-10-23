@@ -1,0 +1,44 @@
+{
+  "variables": {
+    "service_account_json": "{{env `SERVICE_ACCOUNT_PATH`}}",
+    "project_id": "{{env `PROJECT_ID`}}",
+    "image": "{{env `IMAGE_NAME`"
+},
+  "builders": [
+    {
+      "type": "googlecompute",
+      "account_file": "{{ user `service_account_json` }}",
+      "project_id": "{{ user `project_id` }}",
+      "source_image": "ubuntu-1604-xenial-v20180109",
+      "zone": "europe-west1-b",
+      "ssh_username": "ubuntu",
+      "image_name": "{{ user `image` }}"
+    }
+  ],
+"provisioners": [
+    {
+      "type": "file",
+      "source": "./core-site",
+      "destination": "/home/ubuntu/core-site"
+    },
+	{
+      "type": "file",
+      "source": "./hadoop_bashrc",
+      "destination": "/home/ubuntu/hadoop_bashrc"
+	},
+    {
+      "type": "file",
+      "source": "./hdfs-site",
+      "destination": "/home/ubuntu/hdfs-site"
+    },
+	{
+      "type": "file",
+      "source": "./yarn-site",
+      "destination": "/home/ubuntu/yarn-site"
+	},
+    {
+      "type": "shell",
+      "script": "script.sh"
+    }
+  ]
+}
